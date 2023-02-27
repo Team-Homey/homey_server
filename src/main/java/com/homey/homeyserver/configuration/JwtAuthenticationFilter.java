@@ -1,6 +1,7 @@
-package com.homey.homeyserver.security;
+package com.homey.homeyserver.configuration;
 
 
+import com.homey.homeyserver.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -31,8 +30,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         /*
          * Todo :
          *  1. Authentication이 AuthenticationContext에 존재하면, 다음 필터로
-         *  2. Jwt가 존재하고, expired or revoked되지 않고, 유효한 경우, 다음 필터로
-         *  3. 1, 2에 해당하지 않는 경우, return
+         *  2. jwt가 존재하지 않거나 유효하지 않으면, 다음 필터로
+         *  3. 1, 2에 해당하지 않는 경우 Authentication을 발급한다.
          *  */
 
         String authorizationHeader = request.getHeader("Authorization");
