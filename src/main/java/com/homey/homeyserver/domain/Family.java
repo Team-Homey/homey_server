@@ -3,6 +3,8 @@ package com.homey.homeyserver.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,6 +17,7 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private User user;
+
+    @OneToMany(mappedBy = "family")
+    private List<User> user;
 }
