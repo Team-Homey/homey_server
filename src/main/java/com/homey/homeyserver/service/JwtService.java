@@ -1,4 +1,4 @@
-package com.homey.homeyserver.security;
+package com.homey.homeyserver.service;
 
 
 import io.jsonwebtoken.Claims;
