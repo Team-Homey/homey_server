@@ -1,2 +1,9 @@
-package com.homey.homeyserver.dto;public class RegisterResponse {
+package com.homey.homeyserver.dto;
+
+
+import lombok.Builder;
+
+@Builder
+public class RegisterResponse {
+    private String accessToken;
 }
