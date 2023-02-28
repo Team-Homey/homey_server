@@ -28,7 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         /*
-         * Todo :
          *  1. Authentication이 AuthenticationContext에 존재하면, 다음 필터로
          *  2. jwt가 존재하지 않거나 유효하지 않으면, 다음 필터로
          *  3. 1, 2에 해당하지 않는 경우 Authentication을 발급한다.
@@ -62,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
+        } 
         filterChain.doFilter(request, response);
     }
 }
