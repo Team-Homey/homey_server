@@ -29,8 +29,8 @@ public class JwtService {
      *
      * */
 
-   @Value("${SECRET_KEY}")
-    private static String SECRET_KEY;
+    @Value("${auth.SECRET_KEY}")
+    private String SECRET_KEY;
 
     //메서드 참조 표현식으로 function 객체를 반환한다. getSubject의 return type이 지네릭 타입으로 들어간 것
     public String extractUsername(String token) {
@@ -58,7 +58,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .signWith(getSigningKey(), SignatureAlgorithm.ES256)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
