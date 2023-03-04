@@ -27,22 +27,28 @@ public class User implements UserDetails {
     private String email;
     private Integer age;
     private String gender;
+    private Integer address;
+    private String picture;
+    private LocalDateTime regDate;
     @DateTimeFormat(pattern = "YYYY-mm-dd")
     private LocalDate birth;
-    private LocalDateTime regDate;
-    @Column
     @Enumerated(EnumType.STRING)
     private FamilyRole familyRole;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Integer address;
+    @Enumerated(EnumType.STRING)
+    private Emotion emotion;
     @ManyToOne
     private Family family;
     @OneToMany(mappedBy = "user")
     private List<Photo> photos;
     @OneToMany(mappedBy = "user")
-    private List<Emotion> emotions;
-    private String picture;
+    private List<Answer> answers;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "user")
+    private List<RelationshipInventory> relationshipInventory;
+
 
     //해당 User 객체의 Authentication 객체를 반환한다.
     @Override

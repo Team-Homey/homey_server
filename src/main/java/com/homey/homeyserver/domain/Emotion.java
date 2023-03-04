@@ -1,21 +1,16 @@
 package com.homey.homeyserver.domain;
 
+public enum Emotion {
+    EXCITED("EXCITED"),
+    HAPPY("HAPPY"),
+    SAD("SAD"),
+    ANGRY("ANGRY"),
+    LOVELY("LOVELY"),
+    SOSO("SOSO"),
+    UNKNOWN("UNKNOWN");
 
-import jakarta.persistence.*;
-import lombok.*;
-
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Emotion {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @ManyToOne
-    private User user;
+    String emotion;
+    Emotion(String emotion) {
+        this.emotion = emotion;
+    }
 }
