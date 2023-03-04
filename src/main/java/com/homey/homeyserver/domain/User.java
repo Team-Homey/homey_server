@@ -1,8 +1,13 @@
 package com.homey.homeyserver.domain;
 
 
+import com.homey.homeyserver.domain.enums.Emotion;
+import com.homey.homeyserver.domain.enums.FamilyRole;
+import com.homey.homeyserver.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +24,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
     @Id
@@ -27,8 +33,9 @@ public class User implements UserDetails {
     private String email;
     private Integer age;
     private String gender;
-    private Integer address;
+    private String address;
     private String picture;
+    @CreatedDate
     private LocalDateTime regDate;
     @DateTimeFormat(pattern = "YYYY-mm-dd")
     private LocalDate birth;
