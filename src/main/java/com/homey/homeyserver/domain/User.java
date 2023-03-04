@@ -44,7 +44,6 @@ public class User implements UserDetails {
     private List<Emotion> emotions;
     private String picture;
 
-
     //해당 User 객체의 Authentication 객체를 반환한다.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
