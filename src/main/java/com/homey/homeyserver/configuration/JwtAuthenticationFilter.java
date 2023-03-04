@@ -28,10 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         /*
-         *  1. Authentication이 AuthenticationContext에 존재하면, 다음 필터로
-         *  2. jwt가 존재하지 않거나 유효하지 않으면, 다음 필터로
-         *  3. 1, 2에 해당하지 않는 경우 Authentication을 발급한다.
-         *  */
+        *  1. Authentication이 AuthenticationContext에 존재하면, 다음 필터로
+        *  2. jwt가 존재하지 않거나 유효하지 않으면, 다음 필터로
+        *  3. jwt가 만료되었으면 다음 필터로
+        *  4. 1, 2, 3에 해당하지 않는 경우 Authentication을 발급한다.
+        * */
 
         String authorizationHeader = request.getHeader("Authorization");
 
@@ -45,13 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String username = jwtService.extractUsername(jwt);
 
-        //이미 Authenticate됐거나, jwt에 subject가 제대로 들어있지 않다면 넘긴다.
-        if (username == null || SecurityContextHolder.getContext().getAuthentication() != null) {
+        //이미 Authenticate됐거나, jwt에 subject가 제대로 들어있지 않았거나, 토큰이 만료된 경우 넘긴다.
+        if (username == null || SecurityContextHolder.getContext().getAuthentication() != null || jwtService.isExpired(jwt)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
         //jwt가 유효하면 Authentication을 ContextHolder에 저장한다.
         if (jwtService.isTokenValid(jwt, userDetails)) {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -61,9 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        } 
+        }
+        
         filterChain.doFilter(request, response);
     }
 }
-
-

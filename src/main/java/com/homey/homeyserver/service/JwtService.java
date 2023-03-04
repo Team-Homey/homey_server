@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
@@ -21,6 +22,7 @@ import static io.jsonwebtoken.Jwts.parserBuilder;
 
 @Service
 public class JwtService {
+    private static final int REFRESH_TOKEN_EXPIRATION = 3;
     /*
      * Todo :
      *  - Jwt 생성
@@ -62,13 +64,34 @@ public class JwtService {
                 .compact();
     }
 
+    public String generateRefreshToken(UserDetails userDetails) {
+        // Jwt 생성해서 반환
+        return Jwts
+                .builder()
+                .setClaims(new HashMap<>())
+                .setSubject(userDetails.getUsername())
+                .setExpiration(getRefreshTokenExpireTime())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private Date getRefreshTokenExpireTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        calendar.add(Calendar.MONTH, REFRESH_TOKEN_EXPIRATION);
+        
+        return calendar.getTime();
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         //토큰의 exprired 여부, username이 일치하는 지 여부 반환
         String username = extractUsername(token);
         return userDetails.getUsername().equals(username) && !isExpired(token);
     }
 
-    private boolean isExpired(String token) {
+    public boolean isExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
