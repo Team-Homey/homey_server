@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //토큰이 존재하지 않으면 Authentication을 부여할 수 없으므로 넘긴다.
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            System.out.println("token not exist");
             filterChain.doFilter(request, response);
             return;
         }
@@ -48,6 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //이미 Authenticate됐거나, jwt에 subject가 제대로 들어있지 않았거나, 토큰이 만료된 경우 넘긴다.
         if (username == null || SecurityContextHolder.getContext().getAuthentication() != null || jwtService.isExpired(jwt)) {
+            System.out.println("invalid token");
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,7 +66,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        
         filterChain.doFilter(request, response);
     }
 }

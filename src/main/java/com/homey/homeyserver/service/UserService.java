@@ -1,10 +1,10 @@
 package com.homey.homeyserver.service;
 
-
-import com.google.api.gax.rpc.NotFoundException;
+import com.homey.homeyserver.domain.Family;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.domain.enums.Emotion;
 import com.homey.homeyserver.dto.UserDto;
+import com.homey.homeyserver.repository.FamilyRepository;
 import com.homey.homeyserver.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FamilyRepository familyRepository;
 
     public UserDto.UserInfoResponse findUser(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
@@ -72,5 +73,21 @@ public class UserService {
         return UserDto.EmotionUpdateResponse.builder()
                 .emotion(savedUser.getEmotion())
                 .build();
+    }
+
+    public void updateUserFamily(String hashCode, Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
+
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User Not Found.");
+        }
+        if (!optionalFamily.isPresent()) {
+            throw new NoSuchElementException("invalid Family code");
+        }
+
+        User user = optionalUser.get();
+        user.setFamily(optionalFamily.get());
+        userRepository.save(user);
     }
 }

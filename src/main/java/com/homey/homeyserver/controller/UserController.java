@@ -1,11 +1,13 @@
 package com.homey.homeyserver.controller;
 
-
-import com.homey.homeyserver.domain.enums.Emotion;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -21,7 +23,6 @@ public class UserController {
 
     @PostMapping("/{id}")
     public UserDto.UpdateResponse updateUser(@RequestBody UserDto.UpdateRequest updateRequest, @PathVariable Long id) {
-
         return userService.modifyUser(updateRequest, id);
     }
 
@@ -31,6 +32,10 @@ public class UserController {
     }
 
     // Todo : family 연결 POST endpoint 작성
-//    @PostMapping("/{id}/Family")
-    
+    @PostMapping("/{id}/family")
+    public ResponseEntity updateUserFamily(@RequestBody Map<String, String> hashCode, @PathVariable Long id) {
+        System.out.println("hashCode = " + hashCode);
+        userService.updateUserFamily(hashCode.get("hashCode"), id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
