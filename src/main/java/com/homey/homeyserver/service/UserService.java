@@ -44,10 +44,26 @@ public class UserService {
                 .regDate(user.getRegDate())
                 .build();
     }
+    public UserDto.UserInfoResponse findUser(String email) {
 
-    public UserDto.UpdateResponse modifyUser(UserDto.UpdateRequest updateRequest, Long id) {
+        User user = getUser(email);
 
-        User user = getUser(id);
+        return UserDto.UserInfoResponse.builder()
+                .id(user.getId())
+                .address(user.getAddress())
+                .age(user.getAge())
+                .birth(user.getBirth())
+                .email(user.getEmail())
+                .gender(user.getGender())
+                .emotion(user.getEmotion())
+                .familyRole(user.getFamilyRole())
+                .picture(user.getPicture())
+                .regDate(user.getRegDate())
+                .build();
+    }
+    public UserDto.UpdateResponse modifyUser(UserDto.UpdateRequest updateRequest, String email) {
+
+        User user = getUser(email);
         user.setAddress(updateRequest.getAddress());
         user.setAge(updateRequest.getAge());
         user.setBirth(updateRequest.getBirth());
@@ -63,8 +79,8 @@ public class UserService {
                 .build();
     }
 
-    public UserDto.EmotionUpdateResponse modifyUserEmotion(Emotion emotion, Long id) {
-        User user = getUser(id);
+    public UserDto.EmotionUpdateResponse modifyUserEmotion(Emotion emotion, String email) {
+        User user = getUser(email);
         user.setEmotion(emotion);
         User savedUser = userRepository.save(user);
 
@@ -81,7 +97,14 @@ public class UserService {
         User user = optionalUser.get();
         return user;
     }
-
+    private User getUser(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User Not Found");
+        }
+        User user = optionalUser.get();
+        return user;
+    }
     public void updateUserFamily(String hashCode, Long id) {
         User user = getUser(id);
         Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
@@ -89,33 +112,5 @@ public class UserService {
 
         user.setFamily(optionalFamily.get());
         userRepository.save(user);
-    }
-
-    public FamilyDto.Info findUserFamily(Long id) {
-        Family family = getUser(id).getFamily();
-
-        return FamilyDto.Info.builder()
-                .hashCode(family.getHashCode())
-                .id(family.getId())
-                .name(family.getName())
-                .regDate(family.getRegDate())
-                .build();
-    }
-
-    public PhotoDto.SaveResponse addUserPhoto(PhotoDto.SaveRequest saveRequest, MultipartFile image, Long id) throws IOException {
-
-        String imageUri = storagePatchUtil.uploadFile(image);
-        Photo savedPhoto = photoRepository.save(Photo.builder()
-                .user(getUser(id))
-                .image(imageUri)
-                .title(saveRequest.getTitle())
-                .build());
-
-        return PhotoDto.SaveResponse.builder()
-                .id(savedPhoto.getId())
-                .image(savedPhoto.getImage())
-                .regDate(savedPhoto.getRegDate())
-                .title(saveRequest.getTitle())
-                .build();
     }
 }
