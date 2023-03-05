@@ -1,48 +1,42 @@
-package com.homey.homeyserver.controller;
-
+package com.homey.homeyserver.utils;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.*;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-@RestController
-public class StoragePatchTestController {
-
-
-
-    @PostMapping("/insert")
-    public ResponseEntity insert(@RequestBody MultipartFile image) throws IOException {
-        System.out.println(image.toString());
-        String uuid = UUID.randomUUID().toString();
-        streamObjectUpload(projectId, bucketName, uuid, image);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+@Component
+public class StoragePatchUtil {
     @Value("${spring.cloud.gcp.storage.bucket}")
     private String bucketName;
 
     @Value("${spring.cloud.gcp.storage.project-id}")
     private String projectId;
+
+    public String uploadFile(MultipartFile contents) throws IOException{
+        //file을 지정된 bucket으로 upload하고, 파일 주소를 반환한다.
+
+        System.out.println(projectId);
+        System.out.println(bucketName);
+
+        String uuid = UUID.randomUUID().toString();
+
+        streamObjectUpload(projectId, bucketName, uuid, contents);
+
+        return "https://storage.googleapis.com/" + bucketName + "/" + uuid;
+    }
+
     public static void streamObjectUpload(
             String projectId, String bucketName, String objectName, MultipartFile contents) throws IOException {
 
@@ -64,8 +58,6 @@ public class StoragePatchTestController {
 
         try (WriteChannel writer = storage.writer(blobInfo)) {
             writer.write(ByteBuffer.wrap(content));
-            System.out.println(
-                    "Wrote to " + objectName + " in bucket " + bucketName + " using a WriteChannel.");
         }
     }
 }

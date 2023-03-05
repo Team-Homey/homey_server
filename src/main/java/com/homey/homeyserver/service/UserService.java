@@ -1,15 +1,21 @@
 package com.homey.homeyserver.service;
 
 import com.homey.homeyserver.domain.Family;
+import com.homey.homeyserver.domain.Photo;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.domain.enums.Emotion;
 import com.homey.homeyserver.dto.FamilyDto;
+import com.homey.homeyserver.dto.PhotoDto;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.repository.FamilyRepository;
+import com.homey.homeyserver.repository.PhotoRepository;
 import com.homey.homeyserver.repository.UserRepository;
+import com.homey.homeyserver.utils.StoragePatchUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -17,9 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final StoragePatchUtil storagePatchUtil;
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
-
+    private final PhotoRepository photoRepository;
     public UserDto.UserInfoResponse findUser(Long id) {
 
         User user = getUser(id);
@@ -92,6 +99,28 @@ public class UserService {
                 .id(family.getId())
                 .name(family.getName())
                 .regDate(family.getRegDate())
+                .build();
+    }
+
+    public PhotoDto.SaveResponse addUserPhoto(PhotoDto.SaveRequest saveRequest, MultipartFile image, Long id) throws IOException {
+        /* Todo -
+            1. multipartFile gcs로 업로드
+            2. uri, title, user 정보 담아서 Photo Entity 생성, db에 저장
+            3. 결과 dto에 담아 반환
+        * */
+
+        String imageUri = storagePatchUtil.uploadFile(image);
+        Photo savedPhoto = photoRepository.save(Photo.builder()
+                .user(getUser(id))
+                .image(imageUri)
+                .title(saveRequest.getTitle())
+                .build());
+
+        return PhotoDto.SaveResponse.builder()
+                .id(savedPhoto.getId())
+                .image(savedPhoto.getImage())
+                .regDate(savedPhoto.getRegDate())
+                .title(saveRequest.getTitle())
                 .build();
     }
 }
