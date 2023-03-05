@@ -4,10 +4,7 @@ package com.homey.homeyserver.controller;
 import com.homey.homeyserver.dto.FamilyDto;
 import com.homey.homeyserver.service.FamilyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +15,11 @@ public class FamilyController {
 
     @PostMapping
     public FamilyDto.RegisterResponse saveFamily(@RequestBody FamilyDto.RegisterRequest registerRequest) {
-        System.out.println(registerRequest.getName());
         return familyService.addFamily(registerRequest);
+    }
+
+    @GetMapping("/{id}")
+    public FamilyDto.findResponse getFamily(@PathVariable Long id) {
+        return familyService.findFamily(id);
     }
 }

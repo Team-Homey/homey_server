@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FamilyDto {
 
@@ -33,4 +34,23 @@ public class FamilyDto {
         private LocalDateTime regDate;
     }
 
+
+    @Builder
+    @Getter
+    public static class Info {
+        private Long id;
+        private String name;
+        private String hashCode;
+        private LocalDateTime regDate;
+    }
+
+    @Builder
+    @Getter
+    public static class findResponse {
+        private Long id;
+        private String name;
+        private String hashCode;
+        private LocalDateTime regDate;
+        private List<UserDto.UserInfoResponse> users;
+    }
 }

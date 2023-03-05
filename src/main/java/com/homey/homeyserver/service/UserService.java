@@ -67,21 +67,31 @@ public class UserService {
     }
 
     private User getUser(Long id) {
-
-        User user = getUser(id);
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User Not Found");
+        }
+        User user = optionalUser.get();
         return user;
     }
 
     public void updateUserFamily(String hashCode, Long id) {
         User user = getUser(id);
         Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
-        if (!optionalFamily.isPresent()) {
-            throw new NoSuchElementException("invalid Family code");
-        }
+
 
         user.setFamily(optionalFamily.get());
         userRepository.save(user);
     }
 
-    
+    public FamilyDto.Info findUserFamily(Long id) {
+        Family family = getUser(id).getFamily();
+
+        return FamilyDto.Info.builder()
+                .hashCode(family.getHashCode())
+                .id(family.getId())
+                .name(family.getName())
+                .regDate(family.getRegDate())
+                .build();
+    }
 }

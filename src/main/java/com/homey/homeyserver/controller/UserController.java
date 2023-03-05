@@ -1,5 +1,6 @@
 package com.homey.homeyserver.controller;
 
+import com.homey.homeyserver.dto.FamilyDto;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,14 @@ public class UserController {
         return userService.modifyUserEmotion(emotion.getEmotion(), id);
     }
 
-    // Todo : family 연결 POST endpoint 작성
     @PostMapping("/{id}/family")
     public ResponseEntity updateUserFamily(@RequestBody Map<String, String> hashCode, @PathVariable Long id) {
-        System.out.println("hashCode = " + hashCode);
         userService.updateUserFamily(hashCode.get("hashCode"), id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/family")
+    public FamilyDto.Info getUserFamily(@PathVariable Long id) {
+        return userService.findUserFamily(id);
     }
 }
