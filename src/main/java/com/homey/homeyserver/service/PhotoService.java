@@ -26,6 +26,12 @@ public class PhotoService {
         photoRepository.delete(getPhoto(id));
     }
 
+    public void modifyPhoto(Long id, String title) {
+        Photo photo = getPhoto(id);
+        photo.setTitle(title);
+        photoRepository.save(photo);
+    }
+
     private Photo getPhoto(Long id) {
         Optional<Photo> optionalPhoto = photoRepository.findById(id);
 

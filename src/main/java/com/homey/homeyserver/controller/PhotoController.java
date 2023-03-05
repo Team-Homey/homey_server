@@ -33,6 +33,7 @@ public class PhotoController {
 
     @PatchMapping("/{id}")
     public ResponseEntity modifyPhoto(@PathVariable Long id, Map<String, String> request) {
-        
+        photoService.modifyPhoto(id, request.get("title"));
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
