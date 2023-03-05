@@ -1,5 +1,6 @@
 package com.homey.homeyserver.domain;
 
+import com.google.common.base.Objects;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,8 +24,7 @@ public class Family {
     @CreatedDate
     private LocalDateTime regDate;
     private String name;
-    private String hashcode;
-
+    private String hashCode;
 
     @OneToMany(mappedBy = "family")
     private List<User> users;
@@ -32,5 +32,4 @@ public class Family {
     private List<RecommendedContent> recommendedContents;
     @OneToMany(mappedBy = "family")
     private List<Question> questions;
-
 }

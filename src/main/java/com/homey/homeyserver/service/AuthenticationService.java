@@ -1,18 +1,14 @@
 package com.homey.homeyserver.service;
 
 
-import com.homey.homeyserver.domain.Role;
+import com.homey.homeyserver.domain.enums.Role;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.dto.LoginDto;
-import com.homey.homeyserver.dto.RegisterRequest;
-import com.homey.homeyserver.dto.RegisterResponse;
 import com.homey.homeyserver.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -67,5 +63,4 @@ public class AuthenticationService {
 
         return jwtService.generateToken(userDetails);
     }
-
 }

@@ -24,7 +24,6 @@ import static io.jsonwebtoken.Jwts.parserBuilder;
 public class JwtService {
     private static final int REFRESH_TOKEN_EXPIRATION = 3;
     /*
-     * Todo :
      *  - Jwt 생성
      *  - Jwt로부터 Claims 추출
      *  - Jwt 유효성 검증

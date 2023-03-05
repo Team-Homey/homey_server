@@ -21,6 +21,8 @@ public class UserDto {
         private String picture;
         private LocalDate birth;
         private FamilyRole familyRole;
+
+        //필요없음.
         public User toEntity() {
             return User.builder()
                     .address(address)

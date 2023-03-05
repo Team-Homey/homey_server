@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping("/{id}")
     public UserDto.UpdateResponse updateUser(@RequestBody UserDto.UpdateRequest updateRequest, @PathVariable Long id) {
+
         return userService.modifyUser(updateRequest, id);
     }
 
@@ -28,4 +29,8 @@ public class UserController {
     public UserDto.EmotionUpdateResponse updateUserEmotion(@RequestBody UserDto.EmotionUpdateRequest emotion, @PathVariable Long id) {
         return userService.modifyUserEmotion(emotion.getEmotion(), id);
     }
+
+    // Todo : family 연결 POST endpoint 작성
+//    @PostMapping("/{id}/Family")
+    
 }

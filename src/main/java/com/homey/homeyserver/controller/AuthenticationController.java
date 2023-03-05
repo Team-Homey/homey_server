@@ -28,12 +28,8 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-//    @PostMapping("/register")
-//    public RegisterResponse register(@RequestBody RegisterRequest request) {
-//
-//        return authenticationService.register(request);
-//    }
 
+    //Todo : user 객체를 AuthenticationController에서 저장하는 것이 맞는가..
     @PostMapping
     public LoginDto.LoginResponse login(@RequestBody LoginDto.LoginRequest loginRequest) {
         return authenticationService.login(loginRequest);
