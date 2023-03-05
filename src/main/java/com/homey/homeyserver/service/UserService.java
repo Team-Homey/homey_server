@@ -3,6 +3,7 @@ package com.homey.homeyserver.service;
 import com.homey.homeyserver.domain.Family;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.domain.enums.Emotion;
+import com.homey.homeyserver.dto.FamilyDto;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.repository.FamilyRepository;
 import com.homey.homeyserver.repository.UserRepository;
@@ -20,11 +21,8 @@ public class UserService {
     private final FamilyRepository familyRepository;
 
     public UserDto.UserInfoResponse findUser(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User Not Found.");
-        }
-        User user = optionalUser.get();
+
+        User user = getUser(id);
 
         return UserDto.UserInfoResponse.builder()
                 .id(user.getId())
@@ -41,11 +39,8 @@ public class UserService {
     }
 
     public UserDto.UpdateResponse modifyUser(UserDto.UpdateRequest updateRequest, Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User Not Found.");
-        }
-        User user = optionalUser.get();
+
+        User user = getUser(id);
         user.setAddress(updateRequest.getAddress());
         user.setAge(updateRequest.getAge());
         user.setBirth(updateRequest.getBirth());
@@ -62,11 +57,7 @@ public class UserService {
     }
 
     public UserDto.EmotionUpdateResponse modifyUserEmotion(Emotion emotion, Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User Not Found.");
-        }
-        User user = optionalUser.get();
+        User user = getUser(id);
         user.setEmotion(emotion);
         User savedUser = userRepository.save(user);
 
@@ -75,19 +66,22 @@ public class UserService {
                 .build();
     }
 
-    public void updateUserFamily(String hashCode, Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
+    private User getUser(Long id) {
 
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User Not Found.");
-        }
+        User user = getUser(id);
+        return user;
+    }
+
+    public void updateUserFamily(String hashCode, Long id) {
+        User user = getUser(id);
+        Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
         if (!optionalFamily.isPresent()) {
             throw new NoSuchElementException("invalid Family code");
         }
 
-        User user = optionalUser.get();
         user.setFamily(optionalFamily.get());
         userRepository.save(user);
     }
+
+    
 }
