@@ -32,6 +32,15 @@ public class FamilyDto {
         private String name;
         private String hashCode;
         private LocalDateTime regDate;
+
+        public static RegisterResponse generateWithEntity(Family family) {
+            return FamilyDto.RegisterResponse.builder()
+                    .id(family.getId())
+                    .regDate(family.getRegDate())
+                    .hashCode(family.getHashCode())
+                    .name(family.getName())
+                    .build();
+        }
     }
 
 
@@ -52,5 +61,15 @@ public class FamilyDto {
         private String hashCode;
         private LocalDateTime regDate;
         private List<UserDto.UserInfoResponse> users;
+
+        public static findResponse generateWithEntity(Family family, List<UserDto.UserInfoResponse> users) {
+            return FamilyDto.findResponse.builder()
+                    .hashCode(family.getHashCode())
+                    .id(family.getId())
+                    .name(family.getName())
+                    .users(users)
+                    .regDate(family.getRegDate())
+                    .build();
+        }
     }
 }

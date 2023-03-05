@@ -40,6 +40,13 @@ public class UserDto {
     public static class UpdateResponse {
         private Long id;
         private LocalDateTime regDate;
+
+        public static UpdateResponse generateWithEntity(User user) {
+            return UserDto.UpdateResponse.builder()
+                    .id(user.getId())
+                    .regDate(user.getRegDate())
+                    .build();
+        }
     }
 
     @Builder
@@ -55,6 +62,21 @@ public class UserDto {
         private LocalDate birth;
         private FamilyRole familyRole;
         private Emotion emotion;
+
+        public static UserInfoResponse generateWithEntity(User user) {
+            return UserDto.UserInfoResponse.builder()
+                    .id(user.getId())
+                    .address(user.getAddress())
+                    .age(user.getAge())
+                    .birth(user.getBirth())
+                    .email(user.getEmail())
+                    .gender(user.getGender())
+                    .emotion(user.getEmotion())
+                    .familyRole(user.getFamilyRole())
+                    .picture(user.getPicture())
+                    .regDate(user.getRegDate())
+                    .build();
+        }
     }
 
     @Getter

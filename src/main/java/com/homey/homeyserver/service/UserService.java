@@ -22,44 +22,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
-    private final StoragePatchUtil storagePatchUtil;
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
-    private final PhotoRepository photoRepository;
     public UserDto.UserInfoResponse findUser(Long id) {
 
         User user = getUser(id);
 
-        return UserDto.UserInfoResponse.builder()
-                .id(user.getId())
-                .address(user.getAddress())
-                .age(user.getAge())
-                .birth(user.getBirth())
-                .email(user.getEmail())
-                .gender(user.getGender())
-                .emotion(user.getEmotion())
-                .familyRole(user.getFamilyRole())
-                .picture(user.getPicture())
-                .regDate(user.getRegDate())
-                .build();
+        return UserDto.UserInfoResponse.generateWithEntity(user);
     }
     public UserDto.UserInfoResponse findUser(String email) {
 
         User user = getUser(email);
 
-        return UserDto.UserInfoResponse.builder()
-                .id(user.getId())
-                .address(user.getAddress())
-                .age(user.getAge())
-                .birth(user.getBirth())
-                .email(user.getEmail())
-                .gender(user.getGender())
-                .emotion(user.getEmotion())
-                .familyRole(user.getFamilyRole())
-                .picture(user.getPicture())
-                .regDate(user.getRegDate())
-                .build();
+        return UserDto.UserInfoResponse.generateWithEntity(user);
     }
     public UserDto.UpdateResponse modifyUser(UserDto.UpdateRequest updateRequest, String email) {
 
@@ -73,10 +48,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        return UserDto.UpdateResponse.builder()
-                .id(savedUser.getId())
-                .regDate(savedUser.getRegDate())
-                .build();
+        return UserDto.UpdateResponse.generateWithEntity(savedUser);
     }
 
     public UserDto.EmotionUpdateResponse modifyUserEmotion(Emotion emotion, String email) {
