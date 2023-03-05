@@ -21,7 +21,11 @@ public class PhotoService {
 
         return PhotoDto.Info.generateWithEntity(photo);
     }
-    
+
+    public void removePhoto(Long id) {
+        photoRepository.delete(getPhoto(id));
+    }
+
     private Photo getPhoto(Long id) {
         Optional<Photo> optionalPhoto = photoRepository.findById(id);
 

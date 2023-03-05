@@ -6,10 +6,12 @@ import com.homey.homeyserver.repository.PhotoRepository;
 import com.homey.homeyserver.service.PhotoService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/photo")
@@ -21,5 +23,16 @@ public class PhotoController {
     @GetMapping("/{id}")
     public PhotoDto.Info getPhoto(@PathVariable Long id) {
         return photoService.findPhoto(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity removePhoto(@PathVariable Long id) {
+        photoService.removePhoto(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity modifyPhoto(@PathVariable Long id, Map<String, String> request) {
+        
     }
 }
