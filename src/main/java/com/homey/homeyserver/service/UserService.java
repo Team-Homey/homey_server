@@ -1,21 +1,14 @@
 package com.homey.homeyserver.service;
 
 import com.homey.homeyserver.domain.Family;
-import com.homey.homeyserver.domain.Photo;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.domain.enums.Emotion;
-import com.homey.homeyserver.dto.FamilyDto;
-import com.homey.homeyserver.dto.PhotoDto;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.repository.FamilyRepository;
-import com.homey.homeyserver.repository.PhotoRepository;
 import com.homey.homeyserver.repository.UserRepository;
-import com.homey.homeyserver.utils.StoragePatchUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 

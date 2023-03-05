@@ -2,6 +2,7 @@ package com.homey.homeyserver.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Question {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String content;
+    @DateTimeFormat(pattern = "YYYY-mm-dd")
     private LocalDate date;
 
     @ManyToOne
