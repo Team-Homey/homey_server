@@ -103,11 +103,6 @@ public class UserService {
     }
 
     public PhotoDto.SaveResponse addUserPhoto(PhotoDto.SaveRequest saveRequest, MultipartFile image, Long id) throws IOException {
-        /* Todo -
-            1. multipartFile gcs로 업로드
-            2. uri, title, user 정보 담아서 Photo Entity 생성, db에 저장
-            3. 결과 dto에 담아 반환
-        * */
 
         String imageUri = storagePatchUtil.uploadFile(image);
         Photo savedPhoto = photoRepository.save(Photo.builder()
