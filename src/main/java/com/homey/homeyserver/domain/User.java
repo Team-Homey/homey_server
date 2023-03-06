@@ -31,6 +31,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
+    private String name;
     private Integer age;
     private String gender;
     private String address;
