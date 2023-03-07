@@ -1,18 +1,12 @@
 package com.homey.homeyserver.controller;
 
-import com.homey.homeyserver.dto.FamilyDto;
-import com.homey.homeyserver.dto.PhotoDto;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
@@ -48,5 +42,4 @@ public class UserController {
         userService.updateUserFamily(hashCode.get("hashCode"), id);
         return new ResponseEntity(HttpStatus.OK);
     }
-
 }

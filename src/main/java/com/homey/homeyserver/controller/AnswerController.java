@@ -4,7 +4,6 @@ package com.homey.homeyserver.controller;
 import com.homey.homeyserver.dto.AnswerDto;
 import com.homey.homeyserver.service.AnswerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +33,4 @@ public class AnswerController {
     public List<AnswerDto.Info> getAnswersOfQuestion(@PathVariable Long id) {
         return answerService.findAnswersOfQuestion(id);
     }
-
-
 }
