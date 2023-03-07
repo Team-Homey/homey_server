@@ -1,11 +1,12 @@
 package com.homey.homeyserver.domain;
 
-import com.google.common.base.Objects;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,20 +17,19 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Family {
-
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(columnDefinition = "TEXT")
+    private String content;
     @CreatedDate
     private LocalDateTime regDate;
-    private String name;
-    private String hashCode;
-
-    @OneToMany(mappedBy = "family")
-    private List<User> users;
-    @OneToMany(mappedBy = "family")
-    private List<RecommendedContent> recommendedContents;
-    @OneToMany(mappedBy = "family")
-    private List<Question> questions;
+    private LocalDate date;
+    @ManyToOne
+    private User user;
+    @ManyToOne
+    private Question question;
+    @OneToMany(mappedBy = "answer")
+    private List<Comment> comment;
 }

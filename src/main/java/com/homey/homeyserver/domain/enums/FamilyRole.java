@@ -1,4 +1,4 @@
-package com.homey.homeyserver.domain;
+package com.homey.homeyserver.domain.enums;
 
 public enum FamilyRole {
     FAMILY_ROLE_FATHER("FAMILY_ROLE_FATHER"),

@@ -1,12 +1,21 @@
 package com.homey.homeyserver.domain;
 
 
+import com.homey.homeyserver.domain.enums.Emotion;
+import com.homey.homeyserver.domain.enums.FamilyRole;
+import com.homey.homeyserver.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -15,26 +24,73 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
+    private String name;
     private Integer age;
     private String gender;
+    private String address;
+    private String picture;
+    @CreatedDate
+    private LocalDateTime regDate;
     @DateTimeFormat(pattern = "YYYY-mm-dd")
     private LocalDate birth;
-    private LocalDateTime regDate;
-    @Column
     @Enumerated(EnumType.STRING)
     private FamilyRole familyRole;
-    private Integer address;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Emotion emotion;
     @ManyToOne
     private Family family;
     @OneToMany(mappedBy = "user")
     private List<Photo> photos;
     @OneToMany(mappedBy = "user")
-    private List<Emotion> emotions;
-    private String picture;
+    private List<Answer> answers;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+    @OneToMany(mappedBy = "user")
+    private List<RelationshipInventory> relationshipInventory;
+
+
+    //해당 User 객체의 Authentication 객체를 반환한다.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return email;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
