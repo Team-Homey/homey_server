@@ -38,11 +38,8 @@ jobs:
       - run: touch ./src/main/resources/homey-server-f8393eaad511.json
       - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
       - run: echo "${{ secrets.GCS_AS_KEY }}" > ./src/main/resources/homey-server-f8393eaad511.json
-      - run: cat ./src/main/resources/application.properties | sed 's/./& /g'
-      - run: cat ./src/main/resources/homey-server-f8393eaad511.json | sed 's/./& /g'
-    
-      - name: Checkout
-        uses: actions/checkout@v3
+      - run: cat ./src/main/resources/application.properties ## | sed 's/./& /g'
+      - run: cat ./src/main/resources/homey-server-f8393eaad511.json
       
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
