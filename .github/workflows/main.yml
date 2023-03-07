@@ -51,7 +51,6 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v1
       
       # Configure Docker to use the gcloud command-line tool as a credential
-      # helper for authentication
       - run: |-
           gcloud --quiet auth configure-docker
       # Build the Docker image
