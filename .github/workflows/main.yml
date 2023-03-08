@@ -21,7 +21,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  GCE_INSTANCE: homey-server-ci-cd 
+  GCE_INSTANCE: homey-server
   GCE_INSTANCE_ZONE: asia-northeast3-a 
 
 jobs:
@@ -80,10 +80,10 @@ jobs:
             --zone "$GCE_INSTANCE_ZONE" \
             --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
             
-      - id: 'compute-ssh'
-        uses: 'google-github-actions/ssh-compute@v0'
-        with:
-          instance_name: 'homey-server-ci-cd'
-          zone: 'asia-northeast3-a'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: 'docker kill $(docker ps -q); docker run -p 80:8080 gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA'
+#       - id: 'compute-ssh'
+#         uses: 'google-github-actions/ssh-compute@v0'
+#         with:
+#           instance_name: 'homey-server-ci-cd'
+#           zone: 'asia-northeast3-a'
+#           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+#           command: 'docker kill $(docker ps -q); docker run -p 80:8080 gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA'
