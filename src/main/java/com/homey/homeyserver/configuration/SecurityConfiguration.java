@@ -28,6 +28,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/authentication/**")
                 .permitAll()
 
+                .requestMatchers("/ping/**")
+                .permitAll()
+
                 .anyRequest()
                 .authenticated()
 
