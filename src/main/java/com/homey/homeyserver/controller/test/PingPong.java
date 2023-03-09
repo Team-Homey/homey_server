@@ -10,7 +10,9 @@ public class PingPong {
 
     @GetMapping
     public String ping() {
+        System.out.println("pingpong");
         return "pong";
     }
+
 }
 
