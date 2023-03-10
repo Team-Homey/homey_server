@@ -13,7 +13,6 @@ public class AnswerDto {
     @Getter
     @Setter
     public static class SaveRequest {
-        private Long questionId;
         private String content;
 
         public Answer toEntity() {

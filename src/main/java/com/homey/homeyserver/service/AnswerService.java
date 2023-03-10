@@ -39,9 +39,9 @@ public class AnswerService {
         return answerInfoList;
     }
 
-    public void saveAnswer(AnswerDto.SaveRequest saveRequest, String email) {
+    public void saveAnswer(AnswerDto.SaveRequest saveRequest, Long questionId, String email) {
         Answer answer = saveRequest.toEntity();
-        answer.setQuestion(getQuestionById(saveRequest.getQuestionId()));
+        answer.setQuestion(getQuestionById(questionId));
         answer.setUser(getUserByEmail(email));
         answerRepository.save(answer);
     }
