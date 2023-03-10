@@ -23,9 +23,8 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
 
     public AnswerDto.Details findAnswer(Long id) {
-        Answer answer = getAnswerById(id);
-
-        return AnswerDto.Details.generateWithEntity(answer);
+        return AnswerDto.Details
+                .generateWithEntity(getAnswerById(id));
     }
 
     public List<AnswerDto.Info> findAnswersOfQuestion(Long questionId) {

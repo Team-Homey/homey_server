@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class AnswerDto {
 
@@ -46,14 +47,20 @@ public class AnswerDto {
     public static class Details extends Info {
         private Long userId;
         private Long questionId;
-        //Todo : Comment API 구현 후 로직에 포함시키기
+        private List<CommentDto.Info> comments;
         public static Details generateWithEntity(Answer answer) {
             return Details.builder()
                     .content(answer.getContent())
                     .id(answer.getId())
+                    .username(answer.getUser().getName())
                     .regDate(answer.getRegDate())
                     .userId(answer.getUser().getId())
                     .questionId(answer.getQuestion().getId())
+                    .comments(answer
+                            .getComment()
+                            .stream()
+                            .map(CommentDto.Info::generateWithEntity)
+                            .toList())
                     .build();
         }
     }
