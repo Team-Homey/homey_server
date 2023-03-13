@@ -3,6 +3,7 @@ package com.homey.homeyserver.domain;
 import com.google.common.base.Objects;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,7 +26,8 @@ public class Family {
     private LocalDateTime regDate;
     private String name;
     private String hashCode;
-
+    @ColumnDefault("0")
+    private Integer point;
     @OneToMany(mappedBy = "family")
     private List<User> users;
     @OneToMany(mappedBy = "family")

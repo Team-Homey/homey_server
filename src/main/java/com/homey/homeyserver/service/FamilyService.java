@@ -20,6 +20,7 @@ public class FamilyService {
 
     private final FamilyRepository familyRepository;
     private final UserRepository userRepository;
+    private final int POINT_UNIT = 3;
 
     @Transactional
     public FamilyDto.RegisterResponse addFamily(FamilyDto.RegisterRequest registerRequest, String email) {
@@ -34,7 +35,7 @@ public class FamilyService {
         return FamilyDto.RegisterResponse.generateWithEntity(savedFamily);
     }
     public FamilyDto.findResponse findFamilyByUserEmail(String email) {
-        Family family = userRepository.findByEmail(email).get().getFamily();
+        Family family = getFamilyByUserEmail(email);
 
         List<UserDto.UserInfoResponse> users = new ArrayList<>();
 
@@ -43,6 +44,10 @@ public class FamilyService {
         }
 
         return FamilyDto.findResponse.generateWithEntity(family, users);
+    }
+
+    private Family getFamilyByUserEmail(String email) {
+        return userRepository.findByEmail(email).get().getFamily();
     }
 
     private String generateHashCode() {
@@ -55,5 +60,12 @@ public class FamilyService {
             throw new NoSuchElementException("family not found");
         }
         return optionalFamily.get();
+    }
+
+    public void updatePoint(String email) {
+        Family family = getFamilyByUserEmail(email);
+        family.setPoint(family.getPoint() + POINT_UNIT);
+
+        familyRepository.save(family);
     }
 }
