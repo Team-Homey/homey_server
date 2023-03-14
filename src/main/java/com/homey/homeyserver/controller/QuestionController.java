@@ -26,10 +26,10 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping
-    public List<QuestionDto.Info> getQuestions(Principal principal) {
-        return questionService.findQuestions(principal.getName());
-    }
+//    @GetMapping
+//    public List<QuestionDto.Info> getQuestions(Principal principal) {
+//        return questionService.findQuestions(principal.getName());
+//    }
 
     //Todo : particular GET endpoint
     @GetMapping("/{id}")

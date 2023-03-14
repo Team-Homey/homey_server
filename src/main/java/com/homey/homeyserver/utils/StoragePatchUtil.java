@@ -24,7 +24,7 @@ public class StoragePatchUtil {
     @Value("${spring.cloud.gcp.storage.project-id}")
     private String projectId;
 
-    public String uploadFile(MultipartFile contents) throws IOException{
+    public String uploadFile(MultipartFile contents) throws IOException {
         //file을 지정된 bucket으로 upload하고, 파일 주소를 반환한다.
 
         String uuid = UUID.randomUUID().toString();

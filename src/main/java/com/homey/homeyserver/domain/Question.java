@@ -15,15 +15,12 @@ import java.util.List;
 @Builder
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String content;
     @DateTimeFormat(pattern = "YYYY-mm-dd")
     private LocalDate date;
-
-    @ManyToOne
-    private Family family;
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 }
