@@ -3,6 +3,7 @@ package com.homey.homeyserver.controller;
 
 import com.homey.homeyserver.dto.AnswerDto;
 import com.homey.homeyserver.service.AnswerService;
+import com.homey.homeyserver.service.FamilyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,14 @@ import java.util.List;
 @RequestMapping("/answer")
 public class AnswerController {
     private final AnswerService answerService;
+    private final FamilyService familyService;
 
-    @PostMapping
-    public ResponseEntity saveAnswer(@RequestBody AnswerDto.SaveRequest saveRequest, Principal principal) {
-        answerService.saveAnswer(saveRequest, principal.getName());
+    @PostMapping("/question/{questionId}")
+    public ResponseEntity saveAnswer(@RequestBody AnswerDto.SaveRequest saveRequest,
+                                     @PathVariable Long questionId,
+                                     Principal principal) {
+        answerService.saveAnswer(saveRequest, questionId, principal.getName());
+        familyService.updatePoint(principal.getName());
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -29,8 +34,8 @@ public class AnswerController {
         return answerService.findAnswer(id);
     }
 
-    @GetMapping("/question/{id}")
-    public List<AnswerDto.Info> getAnswersOfQuestion(@PathVariable Long id) {
-        return answerService.findAnswersOfQuestion(id);
+    @GetMapping("/question/{questionId}")
+    public List<AnswerDto.Info> getAnswersOfQuestion(@PathVariable Long questionId) {
+        return answerService.findAnswersOfQuestion(questionId);
     }
 }

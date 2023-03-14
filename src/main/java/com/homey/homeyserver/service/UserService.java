@@ -6,9 +6,13 @@ import com.homey.homeyserver.domain.enums.Emotion;
 import com.homey.homeyserver.dto.UserDto;
 import com.homey.homeyserver.repository.FamilyRepository;
 import com.homey.homeyserver.repository.UserRepository;
+import com.homey.homeyserver.utils.StoragePatchUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -17,6 +21,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final FamilyRepository familyRepository;
+    private final StoragePatchUtil storagePatchUtil;
     public UserDto.UserInfoResponse findUser(Long id) {
 
         User user = getUser(id);
@@ -76,6 +81,13 @@ public class UserService {
 
 
         user.setFamily(optionalFamily.get());
+        userRepository.save(user);
+    }
+
+    public void savePicture(MultipartFile image, String email) throws IOException {
+        String imageUri = storagePatchUtil.uploadFile(image);
+        User user = getUser(email);
+        user.setPicture(imageUri);
         userRepository.save(user);
     }
 }

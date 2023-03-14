@@ -23,10 +23,6 @@ public class QuestionService {
     private final UserRepository userRepository;
     public void saveQuestion(QuestionDto.SaveRequest registerRequest, String email) {
         Question question = registerRequest.toEntity();
-
-        Family family = getFamilyByUserEmail(email);
-        question.setFamily(family);
-
         questionRepository.save(question);
     }
 
@@ -37,18 +33,6 @@ public class QuestionService {
 
     private Question getQuestionEntityById(Long id) {
         return questionRepository.findById(id).orElseThrow(() -> new NoSuchElementException("no such question"));
-    }
-
-    public List<QuestionDto.Info> findQuestions(String email) {
-        Family family = getFamilyByUserEmail(email);
-
-        List<QuestionDto.Info> questions = new ArrayList<>();
-
-        family.getQuestions().forEach(question ->
-                questions.add(QuestionDto.Info.
-                        generateWithEntity(question)));
-
-        return questions;
     }
 
     private Family getFamilyByUserEmail(String email) {

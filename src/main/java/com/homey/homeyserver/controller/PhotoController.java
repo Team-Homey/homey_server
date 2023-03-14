@@ -52,10 +52,16 @@ public class PhotoController {
         return photoService.findFamilyPhoto(principal.getName());
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public PhotoDto.SaveResponse saveUserPhoto(@RequestPart PhotoDto.SaveRequest saveRequest,
-                                               @RequestPart MultipartFile image,
-                                               Principal principal) throws IOException {
-        return photoService.addUserPhoto(saveRequest, image, principal.getName());
+    @PostMapping("/content")
+    public PhotoDto.SaveResponse saveUserPhotoContents(@RequestBody PhotoDto.SaveRequest saveRequest, Principal principal) throws IOException {
+        return photoService.addUserPhotoContents(saveRequest, principal.getName());
     }
+
+    @PostMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity saveUserPhoto(@RequestPart MultipartFile image, @PathVariable Long id, Principal principal) throws IOException {
+        photoService.addUserPhoto(image, id, principal.getName());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 }

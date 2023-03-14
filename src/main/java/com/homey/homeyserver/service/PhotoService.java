@@ -65,12 +65,17 @@ public class PhotoService {
         photoRepository.save(photo);
     }
 
-    public PhotoDto.SaveResponse addUserPhoto(PhotoDto.SaveRequest saveRequest, MultipartFile image, String email) throws IOException {
+    public void addUserPhoto(MultipartFile image, Long photoId, String email) throws IOException {
 
         String imageUri = storagePatchUtil.uploadFile(image);
+        Photo photo = photoRepository.findById(photoId).orElseThrow(() -> new NoSuchElementException("Photo not found"));
+        photo.setImage(imageUri);
+        photoRepository.save(photo);
+    }
+
+    public PhotoDto.SaveResponse addUserPhotoContents(PhotoDto.SaveRequest saveRequest, String email) throws IOException {
         Photo savedPhoto = photoRepository.save(Photo.builder()
                 .user(getUser(email))
-                .image(imageUri)
                 .title(saveRequest.getTitle())
                 .build());
 
@@ -81,7 +86,6 @@ public class PhotoService {
                 .title(saveRequest.getTitle())
                 .build();
     }
-
     private Photo getPhoto(Long id) {
         Optional<Photo> optionalPhoto = photoRepository.findById(id);
 

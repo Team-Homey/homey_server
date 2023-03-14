@@ -1,6 +1,5 @@
 package com.homey.homeyserver.controller;
 
-
 import com.homey.homeyserver.dto.FamilyDto;
 import com.homey.homeyserver.service.FamilyService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,4 @@ public class FamilyController {
     public FamilyDto.findResponse getMyFamily(Principal principal) {
         return familyService.findFamilyByUserEmail(principal.getName());
     }
-
-
-
 }
