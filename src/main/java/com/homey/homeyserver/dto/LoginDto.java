@@ -2,9 +2,19 @@ package com.homey.homeyserver.dto;
 
 
 import lombok.*;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 public class LoginDto {
+
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginRequestTest{
+        private String email;
+        private String name;
+    }
 
 
     @Getter
