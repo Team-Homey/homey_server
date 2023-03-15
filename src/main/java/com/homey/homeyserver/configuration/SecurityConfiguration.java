@@ -31,6 +31,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/ping/**")
                 .permitAll()
 
+                .requestMatchers("/question/family")
+                .permitAll()
+
                 .anyRequest()
                 .authenticated()
 

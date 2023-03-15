@@ -32,4 +32,6 @@ public class Family {
     private List<User> users;
     @OneToMany(mappedBy = "family")
     private List<RecommendedContent> recommendedContents;
+    @OneToMany(mappedBy = "family")
+    private List<Question> questions;
 }
