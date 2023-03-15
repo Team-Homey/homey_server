@@ -10,18 +10,11 @@ import java.util.List;
 public class QuestionDto {
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     public static class SaveRequest {
-        private String content;
-        private LocalDate date;
-
-        public Question toEntity() {
-            return Question.builder()
-                    .content(content)
-                    .date(date)
-                    .build();
-        }
+        private Long familyId;
     }
 
     @SuperBuilder
@@ -29,13 +22,11 @@ public class QuestionDto {
     public static class Info {
         private Long id;
         private String content;
-        private LocalDate date;
 
         public static Info generateWithEntity(Question question) {
             return Info.builder()
                     .id(question.getId())
                     .content(question.getContent())
-                    .date(question.getDate())
                     .build();
         }
     }
@@ -48,7 +39,6 @@ public class QuestionDto {
             return Details.builder()
                     .id(question.getId())
                     .content(question.getContent())
-                    .date(question.getDate())
                     .answers(question.getAnswers()
                             .stream()
                             .map(AnswerDto.Info::generateWithEntity)

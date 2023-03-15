@@ -20,18 +20,23 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @PostMapping
-    public ResponseEntity saveQuestion(@RequestBody QuestionDto.SaveRequest registerRequest, Principal principal) {
-        questionService.saveQuestion(registerRequest, principal.getName());
+
+//    // Todo : predefinedQuestion으로부터 가져오기
+//    @PostMapping
+//    public ResponseEntity saveQuestion(@RequestBody QuestionDto.SaveRequest registerRequest, Principal principal) {
+//        questionService.saveQuestion(registerRequest, principal.getName());
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+    @PostMapping("/family")
+    public ResponseEntity addQuestion(@RequestBody QuestionDto.SaveRequest registerRequest) {
+        questionService.addQuestion(registerRequest);
         return new ResponseEntity(HttpStatus.OK);
     }
+    @GetMapping("/family")
+    public List<QuestionDto.Info> getQuestionsOfFamily(Principal principal) {
+        return questionService.findQuestions(principal.getName());
+    }
 
-//    @GetMapping
-//    public List<QuestionDto.Info> getQuestions(Principal principal) {
-//        return questionService.findQuestions(principal.getName());
-//    }
-
-    //Todo : particular GET endpoint
     @GetMapping("/{id}")
     public QuestionDto.Details getQuestion(@PathVariable Long id) {
         return questionService.findQuestion(id);
