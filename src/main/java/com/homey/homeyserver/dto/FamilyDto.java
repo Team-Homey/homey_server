@@ -30,14 +30,14 @@ public class FamilyDto {
     public static class RegisterResponse {
         private Long id;
         private String name;
-        private String hashCode;
+        private String code;
         private LocalDateTime regDate;
 
         public static RegisterResponse generateWithEntity(Family family) {
             return FamilyDto.RegisterResponse.builder()
                     .id(family.getId())
                     .regDate(family.getRegDate())
-                    .hashCode(family.getHashCode())
+                    .code(family.getHashCode())
                     .name(family.getName())
                     .build();
         }
@@ -49,7 +49,7 @@ public class FamilyDto {
     public static class Info {
         private Long id;
         private String name;
-        private String hashCode;
+        private String code;
         private LocalDateTime regDate;
     }
 
@@ -58,13 +58,13 @@ public class FamilyDto {
     public static class findResponse {
         private Long id;
         private String name;
-        private String hashCode;
+        private String code;
         private LocalDateTime regDate;
         private List<UserDto.UserInfoResponse> users;
 
         public static findResponse generateWithEntity(Family family, List<UserDto.UserInfoResponse> users) {
             return FamilyDto.findResponse.builder()
-                    .hashCode(family.getHashCode())
+                    .code(family.getHashCode())
                     .id(family.getId())
                     .name(family.getName())
                     .users(users)
