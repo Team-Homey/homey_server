@@ -18,7 +18,7 @@ public class UserDto {
         private Integer age;
         private String gender;
         private String address;
-        private String picture;
+        private String name;
         private LocalDate birth;
         private FamilyRole familyRole;
 
@@ -30,7 +30,7 @@ public class UserDto {
                     .gender(gender)
                     .birth(birth)
                     .familyRole(familyRole)
-                    .picture(picture)
+                    .name(name)
                     .build();
         }
     }
@@ -54,6 +54,7 @@ public class UserDto {
     public static class UserInfoResponse {
         private Long id;
         private String email;
+        private String name;
         private Integer age;
         private String gender;
         private String address;
@@ -61,20 +62,21 @@ public class UserDto {
         private LocalDateTime regDate;
         private LocalDate birth;
         private FamilyRole familyRole;
-        private Emotion emotion;
+//        private Emotion emotion;
 
         public static UserInfoResponse generateWithEntity(User user) {
-            return UserDto.UserInfoResponse.builder()
+            return UserInfoResponse.builder()
                     .id(user.getId())
                     .address(user.getAddress())
                     .age(user.getAge())
                     .birth(user.getBirth())
                     .email(user.getEmail())
                     .gender(user.getGender())
-                    .emotion(user.getEmotion())
+//                    .emotion(user.getEmotion())
                     .familyRole(user.getFamilyRole())
                     .picture(user.getPicture())
                     .regDate(user.getRegDate())
+                    .name(user.getName())
                     .build();
         }
     }

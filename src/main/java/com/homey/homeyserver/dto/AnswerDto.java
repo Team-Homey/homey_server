@@ -30,14 +30,14 @@ public class AnswerDto {
         protected Long id;
         protected String content;
         protected LocalDateTime regDate;
-        protected String username;
+        protected String name;
 
         public static Info generateWithEntity(Answer answer) {
             return Info.builder()
                     .content(answer.getContent())
                     .id(answer.getId())
                     .regDate(answer.getRegDate())
-                    .username(answer.getUser().getName())
+                    .name(answer.getUser().getName())
                     .build();
         }
     }
@@ -52,7 +52,7 @@ public class AnswerDto {
             return Details.builder()
                     .content(answer.getContent())
                     .id(answer.getId())
-                    .username(answer.getUser().getName())
+                    .name(answer.getUser().getName())
                     .regDate(answer.getRegDate())
                     .userId(answer.getUser().getId())
                     .questionId(answer.getQuestion().getId())
