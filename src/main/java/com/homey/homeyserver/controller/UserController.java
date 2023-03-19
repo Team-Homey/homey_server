@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,6 +35,19 @@ public class UserController {
     public UserDto.UserInfoResponse getUser(@PathVariable Long id) {
         return userService.findUser(id);
     }
+
+
+    @GetMapping("/my-emotion")
+    public UserDto.EmotionUpdateResponse getMyEmotion(Principal principal) {
+        return userService.getUserEmotion(principal.getName());
+    }
+
+
+    // Todo :가족 모두의 emotion 반환
+//    @GetMapping("/family-emotions")
+//    public List<UserDto.EmotionUpdateResponse> getFamilyEmotions(Principal principal) {
+//
+//    }
 
     @GetMapping("/my-info")
     public UserDto.UserInfoResponse getMyUserInformation(Principal principal) {

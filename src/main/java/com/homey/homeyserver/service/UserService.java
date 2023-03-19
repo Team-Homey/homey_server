@@ -41,7 +41,7 @@ public class UserService {
         user.setAge(updateRequest.getAge());
         user.setBirth(updateRequest.getBirth());
         user.setGender(updateRequest.getGender());
-        user.setPicture(updateRequest.getPicture());
+        user.setName(updateRequest.getName());
         user.setFamilyRole(updateRequest.getFamilyRole());
 
         User savedUser = userRepository.save(user);
@@ -89,5 +89,13 @@ public class UserService {
         User user = getUser(email);
         user.setPicture(imageUri);
         userRepository.save(user);
+    }
+
+    public UserDto.EmotionUpdateResponse getUserEmotion(String email) {
+        return UserDto.EmotionUpdateResponse
+                .builder()
+                .emotion(getUser(email)
+                        .getEmotion())
+                .build();
     }
 }
