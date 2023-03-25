@@ -23,4 +23,8 @@ public class FamilyController {
     public FamilyDto.findResponse getMyFamily(Principal principal) {
         return familyService.findFamilyByUserEmail(principal.getName());
     }
+    @GetMapping("/ids")
+    public FamilyDto.FamilyIdsResponse getFamilyIds() {
+        return familyService.findFamilyIds();
+    }
 }

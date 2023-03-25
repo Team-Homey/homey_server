@@ -47,6 +47,7 @@ public class PhotoController {
     public List<PhotoDto.Info> getMyPhoto(Principal principal) {
         return photoService.findPhoto(principal.getName());
     }
+
     @GetMapping("/family")
     public List<PhotoDto.Info> getFamilyPhoto(Principal principal) {
         return photoService.findFamilyPhoto(principal.getName());
@@ -63,5 +64,9 @@ public class PhotoController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping("/family/{familyId}")
+    public PhotoDto.PhotoUrlResponse getPhotoURLOfFamily(@PathVariable Long familyId) {
+        return photoService.findFamilyPhotoURL(familyId);
+    }
 
 }

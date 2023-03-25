@@ -68,4 +68,8 @@ public class FamilyService {
 
         familyRepository.save(family);
     }
+
+    public FamilyDto.FamilyIdsResponse findFamilyIds() {
+        return FamilyDto.FamilyIdsResponse.generateWithEntities(familyRepository.findAll());
+    }
 }

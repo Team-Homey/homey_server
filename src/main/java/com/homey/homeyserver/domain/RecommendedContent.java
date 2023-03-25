@@ -19,6 +19,10 @@ public class RecommendedContent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String title;
+    private String url;
+    private String picture;
+    private String address;
     @Column(columnDefinition = "TEXT")
     private String content;
     @CreatedDate
