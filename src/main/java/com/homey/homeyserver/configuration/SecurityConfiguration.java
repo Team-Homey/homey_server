@@ -34,6 +34,15 @@ public class SecurityConfiguration {
                 .requestMatchers("/question/family")
                 .permitAll()
 
+                .requestMatchers("/family/ids")
+                .permitAll()
+
+                .requestMatchers("/photo/family/**")
+                .permitAll()
+
+                .requestMatchers("/recommended-content/**")
+                .permitAll()
+
                 .anyRequest()
                 .authenticated()
 

@@ -5,6 +5,7 @@ import com.homey.homeyserver.domain.Family;
 import com.homey.homeyserver.domain.Photo;
 import com.homey.homeyserver.domain.User;
 import com.homey.homeyserver.dto.PhotoDto;
+import com.homey.homeyserver.repository.FamilyRepository;
 import com.homey.homeyserver.repository.PhotoRepository;
 import com.homey.homeyserver.repository.UserRepository;
 import com.homey.homeyserver.utils.StoragePatchUtil;
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class PhotoService {
     private final StoragePatchUtil storagePatchUtil;
     private final PhotoRepository photoRepository;
     private final UserRepository userRepository;
+    private final FamilyRepository familyRepository;
 
     public PhotoDto.Info findPhoto(Long id) {
         Photo photo = getPhoto(id);
@@ -43,16 +44,26 @@ public class PhotoService {
 
     public List<PhotoDto.Info> findFamilyPhoto(String email) {
         Family family = getUser(email).getFamily();
-        List<User> familyMembers = family.getUsers();
-        List<PhotoDto.Info> familyPhotos = new ArrayList<>();
 
-        for (User user : familyMembers) {
-            for (Photo photo : user.getPhotos()) {
-                familyPhotos.add(PhotoDto.Info.generateWithEntity(photo));
-            }
-        }
+        return getAllPhotosOfFamily(family)
+                .stream()
+                .map(PhotoDto.Info::generateWithEntity)
+                .collect(Collectors.toList());
+    }
 
-        return familyPhotos;
+    public PhotoDto.PhotoUrlResponse findFamilyPhotoURL(Long familyId) {
+        Family family = getFamily(familyId);
+        User user = family.getUsers().get(0);
+
+        return PhotoDto.PhotoUrlResponse.generateWithEntities(getAllPhotosOfFamily(family), user);
+    }
+
+    private List<Photo> getAllPhotosOfFamily(Family family) {
+        return family.getUsers()
+                .stream()
+                .map(User :: getPhotos)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public void removePhoto(Long id) {
@@ -72,7 +83,6 @@ public class PhotoService {
         photo.setImage(imageUri);
         photoRepository.save(photo);
     }
-
     public PhotoDto.SaveResponse addUserPhotoContents(PhotoDto.SaveRequest saveRequest, String email) throws IOException {
         Photo savedPhoto = photoRepository.save(Photo.builder()
                 .user(getUser(email))
@@ -86,6 +96,7 @@ public class PhotoService {
                 .title(saveRequest.getTitle())
                 .build();
     }
+
     private Photo getPhoto(Long id) {
         Optional<Photo> optionalPhoto = photoRepository.findById(id);
 
@@ -104,5 +115,10 @@ public class PhotoService {
         }
 
         return optionalUser.get();
+
+    }
+
+    private Family getFamily(Long id) {
+        return familyRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 }

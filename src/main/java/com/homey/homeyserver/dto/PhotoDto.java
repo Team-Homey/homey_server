@@ -1,11 +1,12 @@
 package com.homey.homeyserver.dto;
 
 import com.homey.homeyserver.domain.Photo;
+import com.homey.homeyserver.domain.User;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PhotoDto {
 
@@ -40,6 +41,23 @@ public class PhotoDto {
                     .regDate(photo.getRegDate())
                     .image(photo.getImage())
                     .title(photo.getTitle())
+                    .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    public static class PhotoUrlResponse {
+        private String address;
+        private List<String> images;
+
+        public static PhotoUrlResponse generateWithEntities(List<Photo> photos, User user) {
+            return PhotoUrlResponse.builder()
+                    .address(user.getAddress())
+                    .images(photos
+                            .stream()
+                            .map(Photo::getImage)
+                            .collect(Collectors.toList()))
                     .build();
         }
     }

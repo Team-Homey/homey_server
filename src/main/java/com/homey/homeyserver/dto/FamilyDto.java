@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FamilyDto {
@@ -69,6 +70,22 @@ public class FamilyDto {
                     .name(family.getName())
                     .users(users)
                     .regDate(family.getRegDate())
+                    .build();
+        }
+    }
+
+    @Builder
+    @Getter
+    public static class FamilyIdsResponse {
+        private List<Long> familyIds;
+
+        public static FamilyIdsResponse generateWithEntities(List<Family> families) {
+            List<Long> tempFamilyIds = new ArrayList();
+            families.forEach((family) -> tempFamilyIds.add(family.getId()));
+
+            return FamilyIdsResponse
+                    .builder()
+                    .familyIds(tempFamilyIds)
                     .build();
         }
     }
