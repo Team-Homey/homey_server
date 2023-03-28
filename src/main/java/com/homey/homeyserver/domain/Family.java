@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,8 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
 public class Family {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,7 +27,7 @@ public class Family {
     private LocalDateTime regDate;
     private String name;
     private String hashCode;
-    @ColumnDefault("0")
+//    @ColumnDefault("0")
     private Integer point;
     @OneToMany(mappedBy = "family")
     private List<User> users;
