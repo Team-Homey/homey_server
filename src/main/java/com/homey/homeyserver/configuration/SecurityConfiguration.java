@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/photo/family/**")
                 .permitAll()
 
-                .requestMatchers("/recommended-content/**")
+                .requestMatchers("/recommended-content/family-id/**")
                 .permitAll()
 
                 .anyRequest()

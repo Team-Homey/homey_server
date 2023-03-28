@@ -34,7 +34,6 @@ public class QuestionDto {
     @Getter
     public static class Details extends Info {
         private List<AnswerDto.Info> answers;
-
         public static Details generateWithEntity(Question question) {
             return Details.builder()
                     .id(question.getId())
