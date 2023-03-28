@@ -53,6 +53,7 @@ public class PhotoService {
 
     public PhotoDto.PhotoUrlResponse findFamilyPhotoURL(Long familyId) {
         Family family = getFamily(familyId);
+
         User user = family.getUsers().get(0);
 
         return PhotoDto.PhotoUrlResponse.generateWithEntities(getAllPhotosOfFamily(family), user);
