@@ -61,14 +61,16 @@ public class FamilyDto {
         private String name;
         private String code;
         private LocalDateTime regDate;
+        private Integer point;
         private List<UserDto.UserInfoResponse> users;
 
         public static findResponse generateWithEntity(Family family, List<UserDto.UserInfoResponse> users) {
-            return FamilyDto.findResponse.builder()
+            return findResponse.builder()
                     .code(family.getHashCode())
                     .id(family.getId())
                     .name(family.getName())
                     .users(users)
+                    .point(family.getPoint())
                     .regDate(family.getRegDate())
                     .build();
         }
