@@ -59,6 +59,28 @@ public class UserService {
                 .build();
     }
 
+    public void updateUserFamily(String hashCode, String email) {
+        User user = getUser(email);
+        Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
+
+
+        user.setFamily(optionalFamily.get());
+        userRepository.save(user);
+    }
+    public void savePicture(MultipartFile image, String email) throws IOException {
+        String imageUri = storagePatchUtil.uploadFile(image);
+        User user = getUser(email);
+        user.setPicture(imageUri);
+        userRepository.save(user);
+    }
+    public UserDto.EmotionUpdateResponse getUserEmotion(String email) {
+        return UserDto.EmotionUpdateResponse
+                .builder()
+                .emotion(getUser(email)
+                        .getEmotion())
+                .build();
+    }
+
     private User getUser(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (!optionalUser.isPresent()) {
@@ -67,6 +89,7 @@ public class UserService {
         User user = optionalUser.get();
         return user;
     }
+
     private User getUser(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (!optionalUser.isPresent()) {
@@ -74,28 +97,5 @@ public class UserService {
         }
         User user = optionalUser.get();
         return user;
-    }
-    public void updateUserFamily(String hashCode, Long id) {
-        User user = getUser(id);
-        Optional<Family> optionalFamily = familyRepository.findByHashCode(hashCode);
-
-
-        user.setFamily(optionalFamily.get());
-        userRepository.save(user);
-    }
-
-    public void savePicture(MultipartFile image, String email) throws IOException {
-        String imageUri = storagePatchUtil.uploadFile(image);
-        User user = getUser(email);
-        user.setPicture(imageUri);
-        userRepository.save(user);
-    }
-
-    public UserDto.EmotionUpdateResponse getUserEmotion(String email) {
-        return UserDto.EmotionUpdateResponse
-                .builder()
-                .emotion(getUser(email)
-                        .getEmotion())
-                .build();
     }
 }
