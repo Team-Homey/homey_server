@@ -62,8 +62,8 @@ public class UserController {
     }
 
     @PostMapping("/family")
-    public ResponseEntity updateUserFamily(@RequestBody Map<String, String> hashCode, @PathVariable Long id) {
-        userService.updateUserFamily(hashCode.get("hashCode"), id);
+    public ResponseEntity updateUserFamily(@RequestBody Map<String, String> hashCode, Principal principal) {
+        userService.updateUserFamily(hashCode.get("hashCode"), principal.getName());
         return new ResponseEntity(HttpStatus.OK);
     }
 }
