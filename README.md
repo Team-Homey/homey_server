@@ -1,8 +1,9 @@
 ![image](https://user-images.githubusercontent.com/91039622/228971403-56b275bc-f13f-4b0c-9732-cc0b9a88c83d.png)
 
 # 2023 Solution Challenge - Homey 🏠
-Korea University GDSC - Team homey
-
+Korea University GDSC - Team homey Server repository
+<details>
+<summary> API 명세서 </summary>
 # 1. Authentication
 
 - **POST - /authentication** : 로그인
@@ -560,3 +561,4 @@ Korea University GDSC - Team homey
     	"result" : 3
     }
     ```
+</details>
