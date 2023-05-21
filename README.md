@@ -4,6 +4,7 @@
 Korea University GDSC - Team homey Server repository
 <details>
 <summary> API 명세서 </summary>
+	
 # 1. Authentication
 
 - **POST - /authentication** : 로그인
